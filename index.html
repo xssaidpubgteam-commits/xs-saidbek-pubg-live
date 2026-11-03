@@ -105,7 +105,7 @@ footer{text-align:center;color:var(--m);padding:10px 4vw 36px}
 <div class="w">
 <div id="setup" class="hide">⚠️ Sayt hali sozlanmagan: faylning boshidagi <b>FB</b> qismiga Firebase ma’lumotlarini kiriting.</div>
 <header>
-  <div class="hr"><div class="brand">𝙭𝙨 𝙨𝙖𝙞𝙙 PUBG</div><button class="ab" id="oa">⚙️ Bosh boshqaruv paneli</button></div>
+  <div class="hr"><div style="display:flex;align-items:center;gap:8px"><div class="brand">𝙭𝙨 𝙨𝙖𝙞𝙙 PUBG</div><span id="on" title="Aloqa holati">⚪</span></div><button class="ab" id="oa">⚙️ Bosh boshqaruv paneli</button></div>
   <nav class="nav" id="nav">
     <button data-t="win" class="on">🏆 G’oliblar</button><button data-t="tour">⚔️ Turnir</button><button data-t="pl">✈️ Samolyot</button><button data-t="lb">🎯 Lobbi</button>
   </nav>
@@ -118,6 +118,7 @@ footer{text-align:center;color:var(--m);padding:10px 4vw 36px}
     </div>
     <h1>𝙭𝙨 𝙨𝙖𝙞𝙙<br>PUBG</h1>
     <p class="m">Halol turnirlar. Samolyotga chiqing va oxirgi tirik qoling.</p>
+    <div class="pb" id="cd" style="display:none;align-self:flex-start"></div>
   </section>
   <div class="soc" id="soc"></div>
   <section class="st">
@@ -198,13 +199,13 @@ footer{text-align:center;color:var(--m);padding:10px 4vw 36px}
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 <script>
-// ===== SOZLAMALAR: Firebase ma’lumotlarini shu yerga kiriting =====
+// ===== SOZLAMALAR =====
 var FB={apiKey:"AIzaSyDMrcwt2GBFtIs5qw2eulba_wk5lYIbUxs",authDomain:"xs-said.firebaseapp.com",databaseURL:"https://xs-said-default-rtdb.firebaseio.com",projectId:"xs-said",appId:"1:393311071281:web:8c5460e3dda94ccb137910"};
 var ADMIN_EMAIL="admin@xssaid.uz"; // Firebase Authentication’da shu email bilan admin yarating. Parolni kodga YOZMANG.
 var TG_BOT="",TG_CHAT=""; // DIQQAT: bot tokeni brauzerda ko’rinadi. Faqat shu maqsad uchun alohida yangi bot oching va uni boshqa joyda ishlatmang.
-var D={name:"O’ZINGNI KO’RSAT",map:"Arena (TDM)",mode:"Arena 1v1",date:"Ertaga",time:"Keyinroq e’lon qilinadi",fee:"10 000 so’m",p1:"300 UC",p2:"240 UC",p3:"120 UC",slots:10,card:"",owner:"",bank:"",adm:"",tg:"",ig:"",yt:""};
+var D={start:"",name:"O’ZINGNI KO’RSAT",map:"Arena (TDM)",mode:"Arena 1v1",date:"Ertaga",time:"Keyinroq e’lon qilinadi",fee:"10 000 so’m",p1:"300 UC",p2:"240 UC",p3:"120 UC",slots:10,card:"",owner:"",bank:"",adm:"",tg:"",ig:"",yt:""};
 var DR=["10 ta o’tirib-turish qiling","Qo’shiq kuylang (10 soniya)","Statusga PUBG rasm qo’ying","Raqibga iltifot ayting","30 soniya jim turing","Raqibga GG deb yozing","Kulgili ovozda gapiring","5 ta otjimaniya qiling"];
-var FL=[["name","Turnir nomi"],["map","Xarita"],["mode","Rejim"],["date","Sana"],["time","Vaqt"],["fee","Qatnashish narxi"],["p1","1-o’rin sovrini"],["p2","2-o’rin sovrini"],["p3","3-o’rin sovrini"],["slots","Joylar soni"],["card","Karta raqami"],["owner","Karta egasi"],["bank","Bank"],["adm","Admin Telegram (@username)"],["tg","Telegram kanal havolasi"],["ig","Instagram havolasi"],["yt","YouTube havolasi"]];
+var FL=[["name","Turnir nomi"],["map","Xarita"],["mode","Rejim"],["date","Sana"],["time","Vaqt"],["start","Boshlanish (2026-11-05 20:00)"],["fee","Qatnashish narxi"],["p1","1-o’rin sovrini"],["p2","2-o’rin sovrini"],["p3","3-o’rin sovrini"],["slots","Joylar soni"],["card","Karta raqami"],["owner","Karta egasi"],["bank","Bank"],["adm","Admin Telegram (@username)"],["tg","Telegram kanal havolasi"],["ig","Instagram havolasi"],["yt","YouTube havolasi"]];
 // ===================================================================
 var $=function(i){return document.getElementById(i)};
 var E=function(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})};
@@ -232,7 +233,7 @@ function R(){
   $("ti").innerHTML=it.map(function(i){return"<div class='gl'><i>"+i[0]+"</i><div><small>"+i[1]+"</small><strong>"+E(i[2])+"</strong></div></div>"}).join("");
   $("q1").textContent=c.p1;$("q2").textContent=c.p2;$("q3").textContent=c.p3;
   var h="";[["tg","✈️ Telegram"],["ig","📸 Instagram"],["yt","▶️ YouTube"]].forEach(function(s){if(c[s[0]])h+="<a href='"+E(U(c[s[0]]))+"' target='_blank' rel='noopener'>"+s[1]+"</a>"});
-  $("soc").innerHTML=h;$("soc2").innerHTML=h;
+  h+="<a href='#' class='shr'>🔗 Ulashish</a>";$("soc").innerHTML=h;$("soc2").innerHTML=h;
   var a=seatsArr(),sq="";for(var i=0;i<c.slots;i++)sq+=a[i]?"<div class='sq on' title='"+E(a[i].nick)+"'>"+E(String(a[i].nick||"?").charAt(0).toUpperCase())+"</div>":"<div class='sq'>"+(i+1)+"</div>";
   $("sts").innerHTML=sq;$("stt").textContent="Samolyotda "+n+" ta o’yinchi. Yana "+left+" ta joy bo’sh.";
   $("cr").textContent=n;$("cl").textContent=left;$("pc").textContent=n;$("cv").textContent=S.vis.toLocaleString("ru-RU");
@@ -248,7 +249,7 @@ function R(){
 var adm=false;
 function ref(p){return db.ref(p)}
 function listen(){
-  ref("pub/cfg").on("value",function(s){S.cfg=Object.assign({},D,s.val()||{});R()});
+  ref(".info/connected").on("value",function(s){$("on").textContent=s.val()?"🟢":"🔴"});ref("pub/cfg").on("value",function(s){S.cfg=Object.assign({},D,s.val()||{});R()},function(e){toast("Bazaga ulanib bo’lmadi: "+(e&&e.code||"xato")+". Rules ni tekshiring.")});
   ref("pub/dares").on("value",function(s){var v=s.val();S.dr=v&&v.length?v:DR;wheel()});
   ref("pub/win").on("value",function(s){S.win=s.val()||{};R()});
   ref("pub/seats").on("value",function(s){var o=K(S.seats).length,f=!sl;sl=1;S.seats=s.val()||{};if(!f&&K(S.seats).length>o)flyby();R()});
@@ -302,7 +303,7 @@ $("xf").addEventListener("submit",function(e){e.preventDefault();var m=$("xm"),i
   if(!db||!/^\d{5,14}$/.test(id)){m.textContent="PUBG ID ni to’g’ri kiriting.";return}
   ref("cancel/"+id).set({id:id,contact:$("xc").value.trim(),time:Date.now()}).then(function(){m.className="ms ok";m.textContent="So’rov adminga yuborildi. Tasdiqlangach joyingiz bo’shaydi.";$("xf").reset();chutes(2)}).catch(function(){m.textContent="Bu ID uchun so’rov allaqachon yuborilgan."})});
 
-$("cf").addEventListener("submit",function(e){e.preventDefault();if(!db)return;var t=$("ct").value.trim();if(!t)return;
+$("cf").addEventListener("submit",function(e){e.preventDefault();if(!db)return;var t=$("ct").value.trim();if(!t)return;try{if(Date.now()-(+sessionStorage.getItem("lc")||0)<30000){toast("Biroz kuting, keyin yana yozing");return}sessionStorage.setItem("lc",Date.now())}catch(x){}
   ref("comments").push({name:($("cn").value.trim()||"Mehmon").slice(0,30),text:t.slice(0,300),time:Date.now()}).then(function(){$("cf").reset();toast("🎉 Tabrigingiz qo’shildi!")})});
 
 /* Baraban */
@@ -345,13 +346,15 @@ function RA(){
   var cn=K(S.can).map(function(k){return S.can[k]});
   h+="<h3 class='o' style='font-size:.9rem;margin:16px 0 8px'>Bekor qilish so’rovlari</h3><div class='tw'><table><tr><th>ID</th><th>Aloqa</th><th></th></tr>"+
   (cn.length?cn.map(function(c){return"<tr><td>"+E(c.id)+"</td><td>"+E(c.contact)+"</td><td><button class='bt s' data-x='cn' data-id='"+E(c.id)+"'>Joyni bo’shatish</button> <button class='bt s r' data-x='cx' data-id='"+E(c.id)+"'>Rad</button></td></tr>"}).join(""):"<tr><td colspan='3'>So’rovlar yo’q.</td></tr>")+"</table></div>";
-  $("a-pay").innerHTML=h;
+  h+="<div style='margin-top:14px;display:flex;gap:8px;flex-wrap:wrap'><button class='bt s g' data-x='cp'>📋 Ro’yxatni nusxalash</button><button class='bt s r' data-x='ca2'>🧹 Barcha joylarni tozalash</button></div>";$("a-pay").innerHTML=h;var pn2=pay.filter(function(p){return!S.seats[p.id]}).length;document.querySelector("#at button[data-a=pay]").textContent="💳 To’lovlar"+(pn2?" ("+pn2+")":"");
   if(document.activeElement!==$("dt"))$("dt").value=S.dr.join("\n");
   $("wt").innerHTML="<table><tr><th>O’rin</th><th>Ism</th><th>Nik</th><th>Sovrin</th><th></th></tr>"+K(S.win).map(function(k){var w=S.win[k];return"<tr><td>"+E(w.place)+"</td><td>"+E(w.name)+"</td><td>"+E(w.nick)+"</td><td>"+E(w.prize)+"</td><td><button class='bt s r' data-x='wd' data-id='"+k+"'>O’chirish</button></td></tr>"}).join("")+"</table>";
   $("ct2").innerHTML="<table><tr><th>Ism</th><th>Izoh</th><th></th></tr>"+K(S.com).map(function(k){var c=S.com[k];return"<tr><td>"+E(c.name)+"</td><td class='w2'>"+E(c.text)+"</td><td><button class='bt s r' data-x='cd' data-id='"+k+"'>O’chirish</button></td></tr>"}).join("")+"</table>";
   fillSet()}
 $("md").addEventListener("click",function(e){var x=e.target.dataset&&e.target.dataset.x;if(!x)return;var id=e.target.dataset.id;
-  if((x==="no"||x==="cn"||x==="wd"||x==="cd")&&!confirm("Ishonchingiz komilmi?"))return;
+  if((x==="no"||x==="cn"||x==="wd"||x==="cd"||x==="ca2")&&!confirm("Ishonchingiz komilmi?"))return;
+  if(x==="cp"){var l=K(S.seats).map(function(k,i){var q=S.pay[k]||{};return(i+1)+". "+(S.seats[k].nick||"")+" | "+k+" | "+(q.contact||"")}).join("\n");try{navigator.clipboard.writeText(l||"Ro’yxat bo’sh").then(function(){toast("Ro’yxat nusxalandi")})}catch(er){}}
+  if(x==="ca2"){ref("pub/seats").remove();ref("pay").remove();ref("cancel").remove()}
   if(x==="ok"&&S.pay[id])ref("pub/seats/"+id).set({nick:S.pay[id].nick});
   if(x==="no"){ref("pay/"+id).remove();ref("pub/seats/"+id).remove()}
   if(x==="cn"){ref("pub/seats/"+id).remove();ref("pay/"+id).remove();ref("cancel/"+id).remove()}
@@ -362,6 +365,10 @@ $("ss").onclick=function(){var o={};FL.forEach(function(f){o[f[0]]=$("f_"+f[0]).
 $("ds").onclick=function(){var l=$("dt").value.split("\n").map(function(s){return s.trim()}).filter(Boolean).slice(0,12),m=$("dm");if(l.length<2){m.className="ms er";m.textContent="Kamida 2 ta shart kerak.";return}ref("pub/dares").set(l).then(function(){m.className="ms ok";m.textContent="Saqlandi."})};
 $("wa").onclick=function(){if(!$("w2").value.trim())return;ref("pub/win").push({place:Math.min(3,Math.max(1,+$("w1").value||1)),name:$("w2").value.trim(),nick:$("w3").value.trim(),prize:$("w4").value.trim(),date:$("w5").value.trim()}).then(function(){["w2","w3","w4","w5"].forEach(function(i){$(i).value=""})})};
 
+/* Teskari sanoq va ulashish */
+function tick(){var e=$("cd"),t=Date.parse((S.cfg.start||"").replace(" ","T"));if(!t||isNaN(t)){e.style.display="none";return}var d=t-Date.now();e.style.display="inline-block";if(d<=0){e.textContent="🔥 Turnir boshlandi!";return}var h=Math.floor(d/36e5),m=Math.floor(d%36e5/6e4),c=Math.floor(d%6e4/1e3);e.textContent="⏳ Boshlanishiga: "+(h>=24?Math.floor(h/24)+" kun ":"")+h%24+" soat "+m+" daq "+c+" soniya"}
+setInterval(tick,1000);
+document.addEventListener("click",function(e){if(e.target.classList&&e.target.classList.contains("shr")){e.preventDefault();var u=location.href.split("#")[0];if(navigator.share)navigator.share({title:document.title,url:u}).catch(function(){});else if(navigator.clipboard)navigator.clipboard.writeText(u).then(function(){toast("Havola nusxalandi")})}});
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(wheel);
 lui();
 var h0=location.hash.slice(1);if(h0&&$("pg-"+h0))tab(h0);
